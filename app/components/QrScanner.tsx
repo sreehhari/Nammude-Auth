@@ -1,14 +1,19 @@
 "use client"
 
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import React, { useEffect } from 'react'
-interface QrScannerProps{
-    onScanSuccess :(decodedText : string)=>void;
-}
+import React, { useEffect, useRef } from 'react'
+import { useScanner } from '../Context';
 
-const QrScanner: React.FC<QrScannerProps> = ({onScanSuccess}) => {
+const QrScanner: React.FC = () => {
+    const {triggerScanSuccess} = useScanner();
+    const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+    const isInitialized = useRef(false);
 
     useEffect(()=>{
+        // Prevent double initialization in Strict Mode
+        if (isInitialized.current) return;
+        isInitialized.current = true;
+
         //creating a new scanner
         const scanner = new Html5QrcodeScanner(
             'reader',
@@ -21,27 +26,38 @@ const QrScanner: React.FC<QrScannerProps> = ({onScanSuccess}) => {
             },
             false //set false for less verbose logging 
         );
+        
+        scannerRef.current = scanner;
+
         const successCallBack = (decodedText:string)=>{
-            onScanSuccess(decodedText);
+            triggerScanSuccess(decodedText);
             scanner.clear();
         };
+        
         const errorCallBack = (error:unknown)=>{
-            console.error(error);
+            
+            if (error && typeof error === 'string' && !error.includes('NotFoundException')) {
+                console.warn('QR Scanner error:', error);
+            }
         };
+        
         scanner.render(successCallBack,errorCallBack);
+        
         return()=>{
-            scanner.clear().catch(error=>{
-                console.error("failed to clear the scanner or unmount.",error);
-            });
+            isInitialized.current = false;
+            if (scannerRef.current) {
+                scannerRef.current.clear().catch(error=>{
+                    console.error("failed to clear the scanner on unmount.",error);
+                });
+                scannerRef.current = null;
+            }
         };
-
-
-    },[onScanSuccess])
+    },[triggerScanSuccess])
+    
   return (
     <div>
         <h2>Qrcode scanner</h2>
-        <div id='reader'style={{width:'300px',margin:'auto'}}>
-
+        <div id='reader' style={{width:'300px',margin:'auto'}}>
         </div>
     </div>
   )

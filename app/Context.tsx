@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 //define the shape of the context data ie define the main interface
 interface ScannerContextType{
     isScannerOpen:boolean;
@@ -27,13 +27,20 @@ const ScannerProvider = ({children}:{children:ReactNode}) => {
       onScanSuccess(decodedText);
     }
   }
-  const value ={
+  // const value ={
+  //   isScannerOpen,
+  //   openScanner,
+  //   closeScanner,
+  //   setScanSuccessHandler,
+  //   triggerScanSuccess,
+  // }
+  const value = useMemo(()=>({
     isScannerOpen,
     openScanner,
     closeScanner,
     setScanSuccessHandler,
-    triggerScanSuccess,
-  }
+    triggerScanSuccess
+  }),[isScannerOpen,openScanner,closeScanner,setScanSuccessHandler,triggerScanSuccess])
   return (
     <ScannerContext.Provider value={value}>
       {children}

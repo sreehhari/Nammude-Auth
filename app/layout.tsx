@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Dock from "./components/Dock";
 import NavBar from "./components/NavBar";
+import ScannerProvider from "./Context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +30,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-<div>Building
-  <NavBar/>
-</div>
-<div>
-  <Dock/>
-</div>
-        {children}
+        <ScannerProvider>
+          <div>
+            <NavBar />
+          </div>
+          {children}
+          <div style={{ position: "fixed", bottom: 0, left: 0, right: 0 }}>
+            <Dock />
+          </div>
+        </ScannerProvider>
+        {/* <div>
+          Building
+          <NavBar />
+        </div>
+        <div>
+          <Dock />
+        </div> */}
       </body>
     </html>
   );

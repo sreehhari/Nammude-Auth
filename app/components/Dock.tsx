@@ -1,11 +1,15 @@
 "use client"
 
+import { useScanner } from "../Context";
+
 interface DockProps{
   onAddClick:()=>void;
 }
 
 
-const Dock : React.FC<DockProps>= ({onAddClick}) => {
+const Dock : React.FC= () => {
+  const {openScanner} = useScanner();
+
   return (
 <div className="dock dock-md">
   <button>
@@ -13,7 +17,7 @@ const Dock : React.FC<DockProps>= ({onAddClick}) => {
     <span className="dock-label">Home</span>
   </button>
   
-<button onClick={onAddClick}>
+<button onClick={openScanner}>
   <svg 
     className="size-[1.2em]" 
     xmlns="http://www.w3.org/2000/svg" 
