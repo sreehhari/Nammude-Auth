@@ -1,5 +1,11 @@
 "use client"
-const Dock = () => {
+
+interface DockProps{
+  onAddClick:()=>void;
+}
+
+
+const Dock : React.FC<DockProps>= ({onAddClick}) => {
   return (
 <div className="dock dock-md">
   <button>
@@ -7,7 +13,7 @@ const Dock = () => {
     <span className="dock-label">Home</span>
   </button>
   
-<button>
+<button onClick={onAddClick}>
   <svg 
     className="size-[1.2em]" 
     xmlns="http://www.w3.org/2000/svg" 
