@@ -11,16 +11,18 @@
     "daisyui": "^5.1.27",
     "html5-qrcode": "2.1.6",
     "next": "15.5.4",
+    "otpauth": "^9.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@biomejs/biome": "2.2.5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   },
   "browserslist": "> 1%"
 }
